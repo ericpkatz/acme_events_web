@@ -2,12 +2,24 @@ const span = document.querySelector('span');
 const ul = document.querySelector('ul');
 let events = [];
 
+window.addEventListener('hashchange', function(){
+  render();
+});
+
 function render(){
   span.innerHTML = events.length;
-  const html = events.map(function(event){
+  const hash = window.location.hash;
+  const id = hash.slice(1)*1;
+  let filtered = events;
+  if(id){
+    filtered = filtered.filter(function(event){
+      return event.id === id;
+    });
+  }
+  const html = filtered.map(function(event){
     return `
       <li>
-        <h4>${ event.name }</h4>
+        <h4><a href='#${event.id}'>${ event.name }</a></h4>
         <p>
           ${ event.description }
         </p>
